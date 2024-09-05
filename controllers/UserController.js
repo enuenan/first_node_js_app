@@ -1,11 +1,11 @@
-const User = require('../models/User');
-const bcrypt = require('bcryptjs');
+// import { create, findAll } from '../models/user.js';
+import hash from 'bcryptjs';
 
-exports.createUser = async (req, res) => {
+export async function createUser(req, res) {
   try {
     const { name, email, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({ name, email, password: hashedPassword });
+    const hashedPassword = await hash(password, 10);
+    const user = await create({ name, email, password: hashedPassword });
 
     if (req.isMobile) {
       // Respond for mobile
@@ -21,11 +21,11 @@ exports.createUser = async (req, res) => {
       res.render('users/new', { error: error.message });
     }
   }
-};
+}
 
-exports.getAllUsers = async (req, res) => {
+export async function getAllUsers(req, res) {
   try {
-    const users = await User.findAll();
+    const users = await findAll();
 
     if (req.isMobile) {
       // Respond for mobile
@@ -41,6 +41,66 @@ exports.getAllUsers = async (req, res) => {
       res.render('users/index', { error: error.message });
     }
   }
-};
+}
+
+export async function getUser(req, res) {
+  try {
+    const users = await findAll();
+
+    if (req.isMobile) {
+      // Respond for mobile
+      res.json({ success: true, data: users });
+    } else {
+      // Render view for web
+      res.render('users/index', { users });
+    }
+  } catch (error) {
+    if (req.isMobile) {
+      res.status(400).json({ success: false, error: error.message });
+    } else {
+      res.render('users/index', { error: error.message });
+    }
+  }
+}
+
+export async function updateUser(req, res) {
+  try {
+    const users = await findAll();
+
+    if (req.isMobile) {
+      // Respond for mobile
+      res.json({ success: true, data: users });
+    } else {
+      // Render view for web
+      res.render('users/index', { users });
+    }
+  } catch (error) {
+    if (req.isMobile) {
+      res.status(400).json({ success: false, error: error.message });
+    } else {
+      res.render('users/index', { error: error.message });
+    }
+  }
+}
+
+export async function deleteUser(req, res) {
+  try {
+    const users = await findAll();
+
+    if (req.isMobile) {
+      // Respond for mobile
+      res.json({ success: true, data: users });
+    } else {
+      // Render view for web
+      res.render('users/index', { users });
+    }
+  } catch (error) {
+    if (req.isMobile) {
+      res.status(400).json({ success: false, error: error.message });
+    } else {
+      res.render('users/index', { error: error.message });
+    }
+  }
+}
 
 // Continue with similar logic for getUser, updateUser, and deleteUser

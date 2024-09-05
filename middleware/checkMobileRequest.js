@@ -7,4 +7,4 @@ const checkMobileRequest = (req, res, next) => {
     next();
 };
 
-module.exports = checkMobileRequest;
+export default checkMobileRequest;
